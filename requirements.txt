@@ -1,4 +1,4 @@
-google-generativeai
+google-genai
 groq
 python-dotenv
 arxiv
