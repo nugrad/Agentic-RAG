@@ -23,7 +23,8 @@ GEMINI_MODELS = [
     "gemini-2.5-flash",
 ]
 
-GROQ_MODEL = "llama-3.3-70b-versatile"
+#GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_MODEL = "llama-3.1-8b-instant"
 
 
 def _call_groq(prompt: str, temperature: float) -> str:

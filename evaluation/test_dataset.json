@@ -1,0 +1,19 @@
+[
+ 
+ 
+  {
+    "question": "How many mandatory labour laws are applicable to organisations, commercial establishments, industrial establishments, and factories in Pakistan?",
+    "ground_truth": "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial establishments, and factories in Pakistan, including the Employee's Old Age Benefits Act 1976, Provincial Employees Social Security Ordinance 1965, The Industrial And Commercial Employment Ordinance 1968, Punjab Shops And Establishments Ordinance 1969, Workers Children Education Ordinance 1972, Minimum Wages Ordinance 1961, Payment Of Wages Act 1936, Companies Profits Workers Participation Act 1968, The Factories Act 1934, Workmen's Compensation Act 1923, West Pakistan Maternity Benefit Ordinance 1962, Apprenticeship Ordinance 1962, Disabled Persons Employment And Rehabilitation Ordinance 1981, Workers Welfare Fund Ordinance 1971, Punjab Industrial Relations Act 2010, and Industrial Relations Act 2012."
+  },
+  {
+    "question": "What are the maximum daily and weekly working hours in Pakistan, and how are they reduced during Ramadan?",
+    "ground_truth": "Daily working hours are a maximum of 8 to 9 hours including 1 hour for lunch and prayer break, and weekly hours are a maximum of 48 hours. During the holy month of Ramadan, working hours are reduced to a maximum of 6 hours daily, which represents a reduction of 2 to 3 hours from normal daily hours."
+  },
+  {
+    "question": "What are the rest time requirements for workers under Pakistani labour law?",
+    "ground_truth": "For every 6 hours of work, 1 hour of rest is required. For more than 5 hours of work, 30 minutes of rest is required. For more than 8.5 hours of work, 2 intervals of 30 minutes rest are required."
+  }
+  
+  
+
+]

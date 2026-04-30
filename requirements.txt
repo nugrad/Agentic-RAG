@@ -7,6 +7,8 @@ langchain
 langchain-community
 langchain-core
 sentence-transformers
+langchain-groq
+langchain-huggingface
 transformers
 torch
 chromadb 
