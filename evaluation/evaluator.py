@@ -67,10 +67,13 @@ def run_pipeline_for_question(question: str, bm25_index) -> dict:
         for c in chunks
     ])
 
-    prompt = f"""You are a legal assistant specializing in Pakistani employment and contract law.
-Answer the question below based ONLY on the provided context.
-If the context does not contain enough information, say so clearly.
-Do not add information beyond what is in the context.
+    prompt = f"""You are a legal assistant for Pakistani employment and contract law.
+
+Answer the question below in 2-4 sentences maximum.
+Be direct. Answer ONLY what was asked.
+Use ONLY information from the provided context.
+Do not explain background. Do not add caveats unless they are in the context.
+If the context does not answer the question, say exactly: "The provided documents do not contain information about this."
 
 Context:
 {context_text}

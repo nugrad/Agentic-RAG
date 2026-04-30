@@ -25,6 +25,10 @@ STRICT RULES:
 - Base your answer ONLY on retrieved passages. Do not add knowledge from outside.
 - Always respond in valid JSON. Nothing outside the JSON block.
 
+"- Every claim in your final answer must be directly supported by retrieved passages. "
+"If a fact is not in the passages, do not include it. "
+"Do not infer, extrapolate, or fill gaps with general knowledge."
+
 RESPONSE FORMAT — use this exact structure every single turn:
 {
   "thought": "Your reasoning about what to do next and why",

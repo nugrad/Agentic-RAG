@@ -98,6 +98,13 @@ def tool_final_answer(answer: str, sources: list[dict]) -> dict:
 
     This is the ONLY way the agent should terminate.
     If the loop hits max iterations, we force-call this with whatever we have.
+    You are a legal assistant for Pakistani employment and contract law.
+
+    Answer the question below in 2-4 sentences maximum.
+    Be direct. Answer ONLY what was asked.
+    Use ONLY information from the provided context.
+    Do not explain background. Do not add caveats unless they are in the context.
+    If the context does not answer the question, say exactly: "The provided documents do not contain information about this."
     """
     # Deduplicate sources by (source, page)
     seen = set()

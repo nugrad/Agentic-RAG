@@ -22,7 +22,7 @@ def get_reranker() -> CrossEncoder:
     return _reranker
 
 
-def rerank(query: str, chunks: list[dict], top_k: int = 5) -> list[dict]:
+def rerank(query: str, chunks: list[dict], top_k: int = 3) -> list[dict]:
     """
     Takes hybrid search results (20 chunks).
     Scores each (query, chunk) pair with cross-encoder.

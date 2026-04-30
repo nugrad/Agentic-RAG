@@ -1,53 +1,49 @@
 {
   "summary": {
-    "faithfulness": 0.7222222222222222,
-    "answer_relevancy": 0.4348803059785373,
-    "context_precision": 0.6666666666416666,
-    "context_recall": 0.7777777777777778
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.6712335552633483,
+    "context_precision": 0.6666666666444444,
+    "context_recall": 0.4444444444444444
   },
   "per_question": [
     {
       "user_input": "How many mandatory labour laws are applicable to organisations, commercial establishments, industrial establishments, and factories in Pakistan?",
       "retrieved_contexts": [
-        "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial \nestablishements, and factories.",
-        "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial \nestablishements, and factories.",
-        "It applies to—\nevery industrial establishment or Commercial establishment wherein twenty or \nmore workmen are employed, directly or through any other person whether on \nbehalf of himself or any other person, or were so employed on any day during the \npreceding twelve months ;",
-        "It applies to—\nevery industrial establishment or Commercial establishment wherein twenty or \nmore workmen are employed, directly or through any other person whether on \nbehalf of himself or any other person, or were so employed on any day during the \npreceding twelve months ;"
+        "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial establishments, and factories.",
+        "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial establishments, and factories.",
+        "It applies to— \nevery industrial establishment or Commercial establishment wherein twenty or more workmen are employed, directly or through any other person whether on behalf of himself or any other person, or were so employed on any day during the preceding twelve months ;"
       ],
-      "response": "According to the provided context, there are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial establishments, and factories.",
+      "response": "16",
       "reference": "There are 16 laws on which compliance is mandatory and are applicable to organisations, commercial establishments, industrial establishments, and factories in Pakistan, including the Employee's Old Age Benefits Act 1976, Provincial Employees Social Security Ordinance 1965, The Industrial And Commercial Employment Ordinance 1968, Punjab Shops And Establishments Ordinance 1969, Workers Children Education Ordinance 1972, Minimum Wages Ordinance 1961, Payment Of Wages Act 1936, Companies Profits Workers Participation Act 1968, The Factories Act 1934, Workmen's Compensation Act 1923, West Pakistan Maternity Benefit Ordinance 1962, Apprenticeship Ordinance 1962, Disabled Persons Employment And Rehabilitation Ordinance 1981, Workers Welfare Fund Ordinance 1971, Punjab Industrial Relations Act 2010, and Industrial Relations Act 2012.",
       "faithfulness": 1.0,
-      "answer_relevancy": 0.8697606119570745,
-      "context_precision": 0.99999999995,
-      "context_recall": 1.0
+      "answer_relevancy": 0.38432940448014685,
+      "context_precision": 0.9999999999666667,
+      "context_recall": 0.0
     },
     {
       "user_input": "What are the maximum daily and weekly working hours in Pakistan, and how are they reduced during Ramadan?",
       "retrieved_contexts": [
-        "During the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily\nMaximum of 8 – 9 hours daily, including 1 hour lunch and prayer break\nMaximum of 6 hours daily",
-        "During the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily\nMaximum of 8 – 9 hours daily, including 1 hour lunch and prayer break\nMaximum of 6 hours daily",
-        "Daily working hours ranges from 8 to 9 hours each day and 48 hours weekly\nDuring the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily",
-        "Daily working hours ranges from 8 to 9 hours each day and 48 hours weekly\nDuring the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily",
-        "During Ramadan (fasting month), special reduced working hours are observed in manufacturing, commercial and service organizations"
+        "- During the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily\n- Maximum of 8 – 9 hours daily, including 1 hour lunch and prayer break\n- Maximum of 6 hours daily\n- Every 6 hours of work, 1 hour of rest\n- More than 5 hours of work, 30 minutes of rest\n- More than 8.5 hours, 2 intervals of 30 minutes rest",
+        "- During the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily\n- Maximum of 8 – 9 hours daily, including 1 hour lunch and prayer break\n- Maximum of 6 hours daily\n- Every 6 hours of work, 1 hour of rest\n- More than 5 hours of work, 30 minutes of rest\n- More than 8.5 hours, 2 intervals of 30 minutes rest",
+        "- Daily working hours ranges from 8 to 9 hours each day\n- Maximum of 48 hours weekly\n- During the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily"
       ],
-      "response": "Based on the provided context, there are multiple conflicting statements regarding the maximum daily and weekly working hours in Pakistan. \n\nHowever, the information regarding the reduction of working hours during Ramadan is consistent across all sources. \n\nAccording to the sources, during the holy month of Ramadan, working hours are reduced by 2 to 3 hours daily.",
+      "response": "The maximum daily working hours in Pakistan are 8-9 hours, and the maximum weekly working hours are 48 hours. During Ramadan, working hours are reduced by 2 to 3 hours daily.",
       "reference": "Daily working hours are a maximum of 8 to 9 hours including 1 hour for lunch and prayer break, and weekly hours are a maximum of 48 hours. During the holy month of Ramadan, working hours are reduced to a maximum of 6 hours daily, which represents a reduction of 2 to 3 hours from normal daily hours.",
-      "faithfulness": 0.5,
-      "answer_relevancy": 0.0,
-      "context_precision": 0.999999999975,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8976583337109021,
+      "context_precision": 0.9999999999666667,
       "context_recall": 1.0
     },
     {
       "user_input": "What are the rest time requirements for workers under Pakistani labour law?",
       "retrieved_contexts": [
         "Section 22-B of the Mines Act, 1923 also fixes weekly hours of work for workers at 48 hours or 8 hours each day, with the limitation of spread-over 12 hours and interval for rest for one hour every six hours",
-        "Section 22-B of the Mines Act, 1923 also fixes weekly hours of work for workers at 48 hours or 8 hours each day, with the limitation of spread-over 12 hours and interval for rest for one hour every six hours",
-        "Section 8 of the West Pakistan Shops and Establishments Ordinance, 1969 likewise, restricts weekly work hours at 48 hours"
+        "Section 22-B of the Mines Act, 1923 also fixes weekly hours of work for workers at 48 hours or 8 hours each day, with the limitation of spread-over 12 hours and interval for rest for one hour every six hours"
       ],
-      "response": "According to the provided context, the rest time requirements for workers under Pakistani labour law are:\n\n- One hour of rest every six hours.\n- The work hours are limited to 12 hours per day.",
+      "response": "Workers are entitled to a one-hour rest interval every six hours.",
       "reference": "For every 6 hours of work, 1 hour of rest is required. For more than 5 hours of work, 30 minutes of rest is required. For more than 8.5 hours of work, 2 intervals of 30 minutes rest are required.",
-      "faithfulness": 0.6666666666666666,
-      "answer_relevancy": NaN,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.731712927598996,
       "context_precision": 0.0,
       "context_recall": 0.3333333333333333
     }
