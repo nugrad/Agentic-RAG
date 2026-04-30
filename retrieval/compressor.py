@@ -41,19 +41,19 @@ from each passage that are directly relevant to answering the query.
 Rules:
 - For each chunk, output its number and extracted sentences
 - Copy sentences verbatim — do not paraphrase
-- If a chunk has NO relevant sentences, write: [CHUNK N]: NOT RELEVANT
+- Be strict — if a sentence only loosely relates to the query, exclude it
+- A sentence must directly address the query to be included
+- If a chunk has NO directly relevant sentences, write: [CHUNK N]: NOT RELEVANT
 - Do not add explanations or commentary
-- Follow the exact output format shown
 
 QUERY: {query}
 
 PASSAGES:
 {chunks_text}
 
-OUTPUT FORMAT (follow exactly):
+OUTPUT FORMAT:
 [CHUNK 1]: <extracted sentences or NOT RELEVANT>
 [CHUNK 2]: <extracted sentences or NOT RELEVANT>
-...and so on for each chunk
 
 Output:"""
 

@@ -8,7 +8,7 @@ def retrieve(
     query: str,
     bm25_index: BM25Index,
     hybrid_top_k: int = 20,
-    rerank_top_k: int = 3
+    rerank_top_k: int = 5
 ) -> list[dict]:
     """
     Full retrieval pipeline for one query.
