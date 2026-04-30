@@ -1,25 +1,27 @@
-# Use slim python image — full image is 1GB+ unnecessary
 FROM python:3.11-slim
 
-# Set working directory inside container
 WORKDIR /app
 
-# Copy requirements first — Docker layer caching
-# If requirements.txt hasn't changed, this layer is cached
-# and pip install doesn't rerun on every build
+# Copy requirements first for layer caching
 COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy rest of the project
+# Pre-download models during build so first request isn't slow
+# These get baked into the image — no download at runtime
+RUN python -c "from sentence_transformers import SentenceTransformer; \
+    SentenceTransformer('BAAI/bge-base-en-v1.5')"
+
+RUN python -c "from sentence_transformers import CrossEncoder; \
+    CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')"
+
+# Copy entire project
 COPY . .
 
-# Create data directories in case they don't exist
-RUN mkdir -p data/papers data/chroma_db
+# Create data directories
+RUN mkdir -p data/pdfs data/chroma_db
 
-# Expose the port FastAPI runs on
 EXPOSE 8000
 
-# Start the server
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
