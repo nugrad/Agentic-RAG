@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mizan AI — Pakistan Legal Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00f5ff;
+    --cyan-dim: #00c8d4;
+    --cyan-faint: rgba(0, 245, 255, 0.08);
+    --pink: #ff2d78;
+    --pink-dim: rgba(255, 45, 120, 0.15);
+    --bg: #030610;
+    --bg-surface: #070d1a;
+    --bg-card: #0a1020;
+    --border: rgba(0, 245, 255, 0.15);
+    --border-strong: rgba(0, 245, 255, 0.35);
+    --text: #e8f4f8;
+    --text-muted: rgba(232, 244, 248, 0.5);
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0, 245, 255, 0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 30% at 50% 100%, rgba(255, 45, 120, 0.04) 0%, transparent 70%);
+  }
+
+  /* Grid lines background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 780px;
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .logo-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 6px var(--cyan));
+  }
+
+  .logo-text {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--cyan);
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--bg-card);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 6px #00ff88;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── Chat container ── */
+  .chat-wrap {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 780px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px 0;
+    min-height: 0;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 0 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── Empty state ── */
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 40px 0;
+    opacity: 0.6;
+  }
+
+  .empty-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 8px var(--cyan));
+  }
+
+  .empty-title {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cyan);
+  }
+
+  .empty-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.8;
+    max-width: 360px;
+  }
+
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .suggestion-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .suggestion-btn:hover {
+    border-color: var(--cyan-dim);
+    color: var(--cyan);
+    background: var(--cyan-faint);
+  }
+
+  /* ── Message bubbles ── */
+  .msg {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { align-items: flex-end; }
+  .msg.bot  { align-items: flex-start; }
+
+  .msg-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0 4px;
+  }
+
+  .bubble {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .msg.user .bubble {
+    background: rgba(0, 245, 255, 0.1);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    border-bottom-right-radius: 3px;
+  }
+
+  .msg.bot .bubble {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 3px;
+  }
+
+  /* Sources */
+  .sources {
+    max-width: 85%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+    padding: 0 2px;
+  }
+
+  .source-tag {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: var(--pink-dim);
+    border: 1px solid rgba(255, 45, 120, 0.25);
+    color: rgba(255, 150, 180, 0.9);
+    letter-spacing: 0.3px;
+  }
+
+  /* Typing indicator */
+  .typing-bubble {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border-bottom-left-radius: 3px;
+    width: fit-content;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--cyan-dim);
+    border-radius: 50%;
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* ── Error bubble ── */
+  .msg.bot .bubble.error {
+    border-color: rgba(255, 45, 120, 0.3);
+    background: rgba(255, 45, 120, 0.05);
+    color: rgba(255, 150, 180, 0.9);
+  }
+
+  /* ── Input area ── */
+  .input-area {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 780px;
+    padding: 12px 24px 20px;
+  }
+
+  .input-box {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 10px 10px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .input-box:focus-within {
+    border-color: var(--cyan-dim);
+    box-shadow: 0 0 0 1px rgba(0, 245, 255, 0.1);
+  }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    max-height: 120px;
+    min-height: 24px;
+    scrollbar-width: none;
+  }
+
+  textarea::placeholder { color: var(--text-muted); }
+  textarea::-webkit-scrollbar { display: none; }
+
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
+    background: var(--cyan-faint);
+    color: var(--cyan);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .send-btn:hover:not(:disabled) {
+    background: rgba(0, 245, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 245, 255, 0.2);
+  }
+
+  .send-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .send-btn svg { width: 16px; height: 16px; }
+
+  .input-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 4px 0;
+  }
+
+  .input-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .iter-badge {
+    font-size: 10px;
+    color: var(--text-muted);
+    display: none;
+  }
+
+  .iter-badge.visible { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="4" x2="18" y2="32" stroke="#00f5ff" stroke-width="1.5"/>
+        <line x1="6" y1="10" x2="30" y2="10" stroke="#00f5ff" stroke-width="1.5"/>
+        <line x1="6" y1="10" x2="6" y2="20" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <line x1="30" y1="10" x2="30" y2="20" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+        <ellipse cx="6" cy="21" rx="5" ry="2" stroke="#00f5ff" stroke-width="1.2"/>
+        <ellipse cx="30" cy="21" rx="5" ry="2" stroke="#00f5ff" stroke-width="1.2"/>
+        <line x1="12" y1="32" x2="24" y2="32" stroke="#00f5ff" stroke-width="1.5"/>
+        <circle cx="18" cy="9" r="1.5" fill="#00f5ff"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">Mizan AI</div>
+      <div class="logo-sub">Pakistan Legal Research</div>
+    </div>
+  </div>
+  <div class="status-pill">
+    <span class="status-dot"></span>
+    System Online
+  </div>
+</header>
+
+<div class="chat-wrap">
+  <div class="messages" id="messages">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">⚖</div>
+      <div class="empty-title">Ask about Pakistani Law</div>
+      <div class="empty-sub">Employment contracts, termination rights,<br>labour regulations, and more.</div>
+      <div class="suggestions">
+        <button class="suggestion-btn" onclick="askSuggestion(this)">Notice period for termination?</button>
+        <button class="suggestion-btn" onclick="askSuggestion(this)">Grounds for summary dismissal?</button>
+        <button class="suggestion-btn" onclick="askSuggestion(this)">Severance pay calculation?</button>
+        <button class="suggestion-btn" onclick="askSuggestion(this)">Probation period rights?</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="input-area">
+  <div class="input-box">
+    <textarea
+      id="input"
+      placeholder="Ask a legal question..."
+      rows="1"
+      onkeydown="handleKey(event)"
+      oninput="autoResize(this)"
+    ></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.5 8L2.5 3L5 8L2.5 13L13.5 8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="input-footer">
+    <span class="input-hint">Enter to send · Shift+Enter for new line</span>
+    <span class="iter-badge" id="iterBadge"></span>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:8000/api/v1/query';
+  let isLoading = false;
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function askSuggestion(btn) {
+    document.getElementById('input').value = btn.textContent;
+    sendMessage();
+  }
+
+  function hideEmpty() {
+    const e = document.getElementById('emptyState');
+    if (e) e.remove();
+  }
+
+  function addUserMsg(text) {
+    hideEmpty();
+    const msgs = document.getElementById('messages');
+    const el = document.createElement('div');
+    el.className = 'msg user';
+    el.innerHTML = `
+      <div class="msg-label">You</div>
+      <div class="bubble">${escHtml(text)}</div>
+    `;
+    msgs.appendChild(el);
+    scrollBottom();
+  }
+
+  function addTyping() {
+    hideEmpty();
+    const msgs = document.getElementById('messages');
+    const el = document.createElement('div');
+    el.className = 'msg bot';
+    el.id = 'typing';
+    el.innerHTML = `
+      <div class="msg-label">Mizan AI</div>
+      <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+    msgs.appendChild(el);
+    scrollBottom();
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+  }
+
+  function addBotMsg(text, sources, iterations, isError) {
+    const msgs = document.getElementById('messages');
+    const el = document.createElement('div');
+    el.className = 'msg bot';
+
+    const sourceHtml = sources && sources.length ? `
+      <div class="sources">
+        ${sources.map(s => `<span class="source-tag">📄 ${escHtml(s.source)} · p.${s.page}</span>`).join('')}
+      </div>
+    ` : '';
+
+    el.innerHTML = `
+      <div class="msg-label">Mizan AI${iterations ? ` · ${iterations} search${iterations > 1 ? 'es' : ''}` : ''}</div>
+      <div class="bubble${isError ? ' error' : ''}">${escHtml(text)}</div>
+      ${sourceHtml}
+    `;
+    msgs.appendChild(el);
+    scrollBottom();
+  }
+
+  function scrollBottom() {
+    const msgs = document.getElementById('messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function setLoading(state) {
+    isLoading = state;
+    document.getElementById('sendBtn').disabled = state;
+    document.getElementById('input').disabled = state;
+  }
+
+  async function sendMessage() {
+    if (isLoading) return;
+    const input = document.getElementById('input');
+    const question = input.value.trim();
+    if (!question) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    addUserMsg(question);
+    setLoading(true);
+    addTyping();
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      removeTyping();
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        addBotMsg(`Server error ${res.status}: ${err.detail || 'Unknown error'}`, null, null, true);
+        return;
+      }
+
+      const data = await res.json();
+
+      const answerText = data.answer
+        .replace(/^Sources:\s*[\r\n]+([\s\S]*)$/, '')
+        .trim();
+
+      const badge = document.getElementById('iterBadge');
+      if (data.iterations) {
+        badge.textContent = `Last query: ${data.iterations} agent loop${data.iterations > 1 ? 's' : ''}`;
+        badge.classList.add('visible');
+      }
+
+      addBotMsg(answerText, data.sources, data.iterations, false);
+
+    } catch (err) {
+      removeTyping();
+      addBotMsg(
+        `Could not connect to Mizan API.\n\nMake sure your FastAPI server is running:\nuvicorn api.main:app --host 0.0.0.0 --port 8000`,
+        null, null, true
+      );
+    } finally {
+      setLoading(false);
+      document.getElementById('input').focus();
+    }
+  }
+</script>
+</body>
+</html>

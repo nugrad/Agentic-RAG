@@ -58,17 +58,17 @@ class HealthResponse(BaseModel):
     models_loaded: bool
 
 
-class IngestRequest(BaseModel):
-    """
-    For the ingest endpoint — trigger re-ingestion of PDFs.
-    pdf_dir defaults to the standard data/pdfs path.
-    """
-    pdf_dir: Optional[str] = Field(
-        default="data/pdfs",
-        description="Directory containing PDF files to ingest"
-    )
+# class IngestRequest(BaseModel):
+#     """
+#     For the ingest endpoint — trigger re-ingestion of PDFs.
+#     pdf_dir defaults to the standard data/pdfs path.
+#     """
+#     pdf_dir: Optional[str] = Field(
+#         default="data/pdfs",
+#         description="Directory containing PDF files to ingest"
+#     )
 
 
-class IngestResponse(BaseModel):
-    message: str
-    chunks_created: int
+# class IngestResponse(BaseModel):
+#     message: str
+#     chunks_created: int

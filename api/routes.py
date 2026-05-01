@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas import (
     QueryRequest, QueryResponse, SourceDocument,
-    HealthResponse, IngestRequest, IngestResponse
+    HealthResponse
 )
 from api.dependencies import get_bm25_index, app_state
 from agent.agent import run_agent
@@ -72,60 +72,60 @@ def query(
         )
 
 
-@router.post("/ingest", response_model=IngestResponse)
-def ingest(
-    request: IngestRequest,
-    bm25_index: BM25Index = Depends(get_bm25_index)
-):
-    """
-    Triggers re-ingestion of PDFs from the specified directory.
-    After ingestion, rebuilds the BM25 index in memory.
+# @router.post("/ingest", response_model=IngestResponse)
+# def ingest(
+#     request: IngestRequest,
+#     bm25_index: BM25Index = Depends(get_bm25_index)
+# ):
+#     """
+#     Triggers re-ingestion of PDFs from the specified directory.
+#     After ingestion, rebuilds the BM25 index in memory.
 
-    Why expose this as an endpoint?
-    In production, you'd add new legal documents without restarting
-    the server. This endpoint handles that — upload PDFs, call /ingest,
-    system is updated.
+#     Why expose this as an endpoint?
+#     In production, you'd add new legal documents without restarting
+#     the server. This endpoint handles that — upload PDFs, call /ingest,
+#     system is updated.
 
-    Note: Vector index (ChromaDB) re-indexing is included.
-    This can take 30-120 seconds depending on document count.
-    In production you'd make this async — for now synchronous is fine.
-    """
-    try:
-        from ingestion.loader import load_all_pdfs
-        from ingestion.chunker import chunk_pages
-        from ingestion.embedder import embed_chunks
-        from ingestion.indexer import index_chunks
-        import json
+#     Note: Vector index (ChromaDB) re-indexing is included.
+#     This can take 30-120 seconds depending on document count.
+#     In production you'd make this async — for now synchronous is fine.
+#     """
+#     try:
+#         from ingestion.loader import load_all_pdfs
+#         from ingestion.chunker import chunk_pages
+#         from ingestion.embedder import embed_chunks
+#         from ingestion.indexer import index_chunks
+#         import json
 
-        print(f"[INGEST] Loading PDFs from {request.pdf_dir}...")
-        pages = load_all_pdfs(request.pdf_dir)
-        chunks = chunk_pages(pages)
+#         print(f"[INGEST] Loading PDFs from {request.pdf_dir}...")
+#         pages = load_all_pdfs(request.pdf_dir)
+#         chunks = chunk_pages(pages)
 
-        print("[INGEST] Embedding chunks...")
-        chunks = embed_chunks(chunks)
+#         print("[INGEST] Embedding chunks...")
+#         chunks = embed_chunks(chunks)
 
-        # Save chunks for BM25
-        with open("data/chunks.json", "w", encoding="utf-8") as f:
-            json.dump(
-                [{k: v for k, v in c.items() if k != "embedding"} for c in chunks],
-                f, ensure_ascii=False
-            )
+#         # Save chunks for BM25
+#         with open("data/chunks.json", "w", encoding="utf-8") as f:
+#             json.dump(
+#                 [{k: v for k, v in c.items() if k != "embedding"} for c in chunks],
+#                 f, ensure_ascii=False
+#             )
 
-        print("[INGEST] Indexing into ChromaDB...")
-        index_chunks(chunks)
+#         print("[INGEST] Indexing into ChromaDB...")
+#         index_chunks(chunks)
 
-        # Rebuild BM25 index in memory with new chunks
-        print("[INGEST] Rebuilding BM25 index...")
-        from retrieval.bm25_search import BM25Index as BM25
-        app_state.bm25_index = BM25(
-            [{k: v for k, v in c.items() if k != "embedding"} for c in chunks]
-        )
+#         # Rebuild BM25 index in memory with new chunks
+#         print("[INGEST] Rebuilding BM25 index...")
+#         from retrieval.bm25_search import BM25Index as BM25
+#         app_state.bm25_index = BM25(
+#             [{k: v for k, v in c.items() if k != "embedding"} for c in chunks]
+#         )
 
-        return IngestResponse(
-            message="Ingestion complete. BM25 and vector index updated.",
-            chunks_created=len(chunks)
-        )
+#         return IngestResponse(
+#             message="Ingestion complete. BM25 and vector index updated.",
+#             chunks_created=len(chunks)
+#         )
 
-    except Exception as e:
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
+#     except Exception as e:
+#         traceback.print_exc()
+#         raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")

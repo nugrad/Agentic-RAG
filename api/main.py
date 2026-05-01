@@ -2,6 +2,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from api.routes import router
 from api.dependencies import load_all_models
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 
 @asynccontextmanager
@@ -39,6 +42,24 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+# app = FastAPI(
+#     title="MIZAN",
+#     version="1.0.0",
+#     lifespan=lifespan
+# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# Serve frontend folder as static files
+# app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+# # Root hits the HTML file directly
+# @app.get("/")
+# def root():
+#     return FileResponse("frontend/index.html")
 
 app.include_router(router, prefix="/api/v1")
 
