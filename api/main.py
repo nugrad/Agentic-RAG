@@ -42,11 +42,11 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
-# app = FastAPI(
-#     title="MIZAN",
-#     version="1.0.0",
-#     lifespan=lifespan
-# )
+app = FastAPI(
+    title="PAKEmployee GPT",
+    version="1.0.0",
+    lifespan=lifespan
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -54,21 +54,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Serve frontend folder as static files
-# app.mount("/static", StaticFiles(directory="frontend"), name="static")
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 # # Root hits the HTML file directly
-# @app.get("/")
-# def root():
-#     return FileResponse("frontend/index.html")
+@app.get("/")
+def root():
+    return FileResponse("frontend/index.html")
 
 app.include_router(router, prefix="/api/v1")
 
 
 # Root redirect so hitting / gives something useful
-@app.get("/")
-def root():
-    return {
-        "message": "Agentic RAG API is running",
-        "docs": "/docs",
-        "health": "/api/v1/health"
-    }
+# @app.get("/")
+# def root():
+#     return {
+#         "message": "Agentic RAG API is running",
+#         "docs": "/docs",
+#         "health": "/api/v1/health"
+#     }

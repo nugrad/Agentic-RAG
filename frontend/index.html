@@ -427,8 +427,8 @@
       </svg>
     </div>
     <div>
-      <div class="logo-text">Mizan AI</div>
-      <div class="logo-sub">Pakistan Legal Research</div>
+      <div class="logo-text">PAKEmployee GPT</div>
+      <div class="logo-sub">Chat to Know Your Rights</div>
     </div>
   </div>
   <div class="status-pill">
@@ -520,7 +520,7 @@
     el.className = 'msg bot';
     el.id = 'typing';
     el.innerHTML = `
-      <div class="msg-label">Mizan AI</div>
+      <div class="msg-label">Hamza  AI</div>
       <div class="typing-bubble">
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
@@ -615,7 +615,7 @@
     } catch (err) {
       removeTyping();
       addBotMsg(
-        `Could not connect to Mizan API.\n\nMake sure your FastAPI server is running:\nuvicorn api.main:app --host 0.0.0.0 --port 8000`,
+        `Could not connect to Hamza API.\n\nMake sure your FastAPI server is running:\nuvicorn api.main:app --host 0.0.0.0 --port 8000`,
         null, null, true
       );
     } finally {
